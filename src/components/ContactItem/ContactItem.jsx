@@ -8,19 +8,17 @@ export class ContactItem extends Component {
   };
 
   render() {
-    const { id, firstName, lastName } = this.props.contact;
-    const { onChoice } = this.props;
     return (
       <li
-        onDoubleClick={() => onChoice(id)}
+        onDoubleClick={() => this.props.onChoice(this.props.contact.id)}
         className={
           style.containerContactItem +
           " " +
-          (this.props.contactEditId == id ? style.edit : "")
+          (this.props.contactEditId == this.props.contact.id ? style.edit : "")
         }
       >
         <p>
-          {firstName} {lastName}
+          {this.props.contact.firstName} {this.props.contact.lastName}
         </p>
         <button onClick={this.onContactDelete}>X</button>
       </li>
