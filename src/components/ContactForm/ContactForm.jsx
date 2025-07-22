@@ -64,18 +64,19 @@ export class ContactForm extends Component {
     this.resetState();
   };
 
-  componentDidUpdate() {
+  static getDerivedStateFromProps(props, state) {
     if (
-      this.props.contactEditId !== this.state.inputContact.id &&
-      this.props.contactEditId !== ""
+      props.contactEditId !== state.inputContact.id &&
+      props.contactEditId !== ""
     ) {
-      const contact = this.props.contacts.find(
-        (item) => item.id === this.props.contactEditId
+      const contact = props.contacts.find(
+        (item) => item.id === props.contactEditId
       );
-      this.setState({
+      return {
         inputContact: contact,
-      });
+      };
     }
+    return null;
   }
 
   render() {
