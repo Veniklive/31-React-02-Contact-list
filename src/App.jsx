@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import "./App.css";
 import ContactForm from "./components/ContactForm/ContactForm.jsx";
+import style from "./App.module.css";
+
+import ContactList from "./components/ContactList/ContactList";
 
 export default class App extends Component {
   state = {
@@ -61,17 +63,43 @@ export default class App extends Component {
     localStorage.setItem(`contacts`, JSON.stringify(newState));
   };
 
+  getContact = () => {
+    const contact = this.state.contacts.filter(
+      (contact) => contact.id === this.state.contactEditId
+    )[0];
+    if (contact) {
+      return contact;
+    } else {
+      return {
+        id: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+      };
+    }
+  };
+
   render() {
     return (
       <>
-        <ContactForm
-          contacts={this.state.contacts}
-          contactEditId={this.state.contactEditId}
-          onChoice={this.choiceToEdit}
-          onSubmit={this.saveContact}
-          onDelete={this.deleteContact}
-          onNew={this.changeOperationModeToAddition}
-        />
+        <div className={style.contactList} onSubmit={this.onFormSubmit}>
+          <h1 className={style.title}>Contact list</h1>
+          <div className={style.flexContainer}>
+            <ContactList
+              contacts={this.state.contacts}
+              contactEditId={this.state.contactEditId}
+              onChoice={this.choiceToEdit}
+              onDelete={this.deleteContact}
+            />
+            <ContactForm
+              contact={this.getContact()}
+              onSubmit={this.saveContact}
+              onDelete={this.deleteContact}
+              onNew={this.changeOperationModeToAddition}
+            />
+          </div>
+        </div>
       </>
     );
   }

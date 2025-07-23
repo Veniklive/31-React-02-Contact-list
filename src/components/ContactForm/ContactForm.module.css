@@ -1,45 +1,19 @@
-.formTitle {
-  border: solid 3px;
-  margin: 0 0 0 0;
-}
-
-.contactForm {
+form {
   display: flex;
   flex-direction: column;
-  height: 90vh;
-  text-align: center;
-  border: solid 3px;
-  margin: 5vh auto;
-  gap: 10px;
-  padding: 10px;
-}
-
-.formContainer {
-  display: flex;
-  flex: 1 1 auto;
-  max-height: 80%;
-}
-
-.containerContacts {
-  width: 50%;
-  margin: 0;
-  padding: 0;
-  overflow-y: auto;
 }
 
 .containerInputs {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
   gap: 10px;
-  width: 50%;
-  position: relative;
 }
 
 .containerInputs input {
+  flex: 1 1 auto;
   font-size: larger;
   position: relative;
-  width: 300px;
+  width: 100%;
   z-index: 1;
   padding: 0.3em 1.3em 0.3em 0.3em;
 }
@@ -53,12 +27,25 @@
 }
 
 .containerButtons {
+  position: relative;
   display: flex;
-  margin: auto 100px;
+  margin-top: auto;
   gap: 50%;
 }
 
 .containerButtons button {
   font-size: large;
-  margin: 0 10px;
+  margin: 0 20px 20px 20px;
+}
+
+.containerButtons > button {
+  position: absolute;
+  left: -50%;
+  transform: translateX(-50%);
+  margin-left: 0;
+}
+
+.containerInputs > div {
+  display: flex;
+  position: relative;
 }

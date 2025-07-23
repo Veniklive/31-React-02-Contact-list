@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import ContactList from "../ContactList/ContactList";
 import style from "./ContactForm.module.css";
 import { nanoid } from "nanoid";
 
 export class ContactForm extends Component {
   state = {
     inputContact: {
-      id: nanoid(),
+      id: "",
       firstName: "",
       lastName: "",
       email: "",
@@ -17,7 +16,7 @@ export class ContactForm extends Component {
   resetState = () => {
     this.setState({
       inputContact: {
-        id: nanoid(),
+        id: "",
         firstName: "",
         lastName: "",
         email: "",
@@ -46,8 +45,14 @@ export class ContactForm extends Component {
 
   onFormSubmit = (event) => {
     event.preventDefault();
-    this.props.onSubmit(this.state.inputContact);
-    if (this.props.contactEditId === "") {
+    this.props.onSubmit({
+      ...this.state.inputContact,
+      id:
+        this.state.inputContact.id === ""
+          ? nanoid()
+          : this.state.inputContact.id,
+    });
+    if (this.props.contact.id === "") {
       this.resetState();
     }
   };
@@ -65,15 +70,12 @@ export class ContactForm extends Component {
   };
 
   static getDerivedStateFromProps(props, state) {
-    if (
-      props.contactEditId !== state.inputContact.id &&
-      props.contactEditId !== ""
-    ) {
-      const contact = props.contacts.find(
-        (item) => item.id === props.contactEditId
-      );
+    if (props.contact === undefined) {
+      return null;
+    }
+    if (props.contact.id !== state.inputContact.id) {
       return {
-        inputContact: contact,
+        inputContact: props.contact,
       };
     }
     return null;
@@ -81,17 +83,8 @@ export class ContactForm extends Component {
 
   render() {
     return (
-      <form className={style.contactForm} onSubmit={this.onFormSubmit}>
-        <h1 className={style.formTitle}>Contact list</h1>
-        <div className={style.formContainer}>
-          <ul className={style.containerContacts}>
-            <ContactList
-              contacts={this.props.contacts}
-              contactEditId={this.props.contactEditId}
-              onChoice={this.props.onChoice}
-              onDelete={this.props.onDelete}
-            />
-          </ul>
+      <>
+        <form onSubmit={this.onFormSubmit}>
           <div className={style.containerInputs}>
             <div>
               <input
@@ -147,22 +140,22 @@ export class ContactForm extends Component {
               </span>
             </div>
           </div>
-        </div>
 
-        <div className={style.containerButtons}>
-          <button type="button" onClick={this.onNew}>
-            New
-          </button>
-          <div>
-            <button>Save</button>
-            {this.props.contactEditId !== "" && (
-              <button type="button" onClick={this.onDeleteInEdit}>
-                Delete
-              </button>
-            )}
+          <div className={style.containerButtons}>
+            <button type="button" onClick={this.onNew}>
+              New
+            </button>
+            <div>
+              <button>Save</button>
+              {this.state.inputContact.id !== "" && (
+                <button type="button" onClick={this.onDeleteInEdit}>
+                  Delete
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </>
     );
   }
 }
